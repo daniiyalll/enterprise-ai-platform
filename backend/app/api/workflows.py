@@ -1,40 +1,32 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.database.connection import get_db
+from app.schemas.workflow import WorkflowCreate, WorkflowResponse
+from app.services.workflow_engine import (
+    create_workflow,
+    get_workflows
+)
 
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/workflows",
+    tags=["Workflows"]
+)
 
 
-workflows = []
+@router.post("/", response_model=WorkflowResponse)
+def create(
+    workflow: WorkflowCreate,
+    db: Session = Depends(get_db)
+):
+
+    return create_workflow(db, workflow)
 
 
-@router.post("/")
-def create_workflow(workflow: dict):
+@router.get("/", response_model=list[WorkflowResponse])
+def read_all(
+    db: Session = Depends(get_db)
+):
 
-    workflows.append(workflow)
-
-    return {
-        "message": "Workflow created successfully",
-        "workflow": workflow
-    }
-
-
-
-@router.get("/")
-def get_workflows():
-
-    return {
-        "total": len(workflows),
-        "workflows": workflows
-    }
-
-
-
-@router.get("/{workflow_id}")
-def get_workflow(workflow_id: int):
-
-    if workflow_id >= len(workflows):
-        return {
-            "error": "Workflow not found"
-        }
-
-    return workflows[workflow_id]
+    return get_workflows(db)
