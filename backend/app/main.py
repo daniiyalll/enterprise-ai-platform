@@ -6,6 +6,7 @@ from fastapi.responses import FileResponse
 
 from app.api import workflows
 from app.api import process_mining
+from app.api import ai
 
 
 app = FastAPI(
@@ -26,6 +27,12 @@ app.include_router(
     process_mining.router,
     prefix="/process-mining",
     tags=["Process Mining"]
+)
+
+# AI Prediction API routes
+app.include_router(
+    ai.router,
+    tags=["AI Prediction"]
 )
 
 
