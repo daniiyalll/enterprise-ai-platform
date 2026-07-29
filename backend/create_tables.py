@@ -5,6 +5,7 @@ from app.models.user import User
 from app.models.project import Project
 from app.models.dataset import Dataset
 from app.models.ai_model import AIModel
+from app.models.workflow import Workflow
 
 
 print("Creating database tables...")
