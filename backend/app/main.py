@@ -3,6 +3,7 @@ from app.database.base import Base
 from app.models import workflow
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from app.ai.prediction_model import workflow_model
 
 from app.api import workflows
 from app.api import process_mining
@@ -49,6 +50,10 @@ def home():
 def favicon():
     return FileResponse("favicon.ico") 
 
+@app.on_event("startup")
+def train_model_on_startup():
+    accuracy = workflow_model.train("dataset/risk_training_data.csv")
+    print(f"AI model trained! Accuracy: {accuracy}")
 
  
      
