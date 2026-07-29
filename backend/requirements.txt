@@ -40,3 +40,10 @@ typing-inspection==0.4.2
 typing_extensions==4.16.0
 tzdata==2026.3
 uvicorn==0.51.0
+sqlalchemy==2.0.51
+psycopg2-binary==2.9.12
+pandas
+scikit-learn
+pm4py
+neo4j
+python-dotenv
