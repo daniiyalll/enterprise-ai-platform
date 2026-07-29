@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 
 from app.api import workflows
+from app.api import process_mining
 
 
 app = FastAPI(
@@ -17,8 +18,14 @@ app = FastAPI(
 # Workflow API routes
 app.include_router(
     workflows.router,
-    prefix="/workflows",
     tags=["Workflows"]
+)
+
+# Process Mining API routes
+app.include_router(
+    process_mining.router,
+    prefix="/process-mining",
+    tags=["Process Mining"]
 )
 
 
@@ -33,4 +40,8 @@ def home():
 # Browser favicon route
 @app.get("/favicon.ico")
 def favicon():
-    return FileResponse("favicon.ico")
+    return FileResponse("favicon.ico") 
+
+
+ 
+     
