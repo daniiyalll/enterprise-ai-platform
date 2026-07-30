@@ -8,6 +8,7 @@ from app.ai.prediction_model import workflow_model
 from app.api import workflows
 from app.api import process_mining
 from app.api import ai
+from app.api import auth
 
 
 app = FastAPI(
@@ -34,6 +35,12 @@ app.include_router(
 app.include_router(
     ai.router,
     tags=["AI Prediction"]
+)
+
+# Authentication API routes
+app.include_router(
+    auth.router,
+    tags=["Authentication"]
 )
 
 
