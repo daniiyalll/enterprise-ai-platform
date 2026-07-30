@@ -9,6 +9,7 @@ from app.api import workflows
 from app.api import process_mining
 from app.api import ai
 from app.api import auth
+from app.api import agents
 
 
 app = FastAPI(
@@ -41,6 +42,12 @@ app.include_router(
 app.include_router(
     auth.router,
     tags=["Authentication"]
+)
+
+# AI Agents API routes
+app.include_router(
+    agents.router,
+    tags=["AI Agents"]
 )
 
 
