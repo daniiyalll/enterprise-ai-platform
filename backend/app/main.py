@@ -33,6 +33,7 @@ def home():
 def favicon():
     return FileResponse("favicon.ico")
 
+<<<<<<< HEAD
 # Train AI model when server starts
 @app.on_event("startup")
 def train_model_on_startup():
@@ -41,6 +42,16 @@ def train_model_on_startup():
         print(f"AI model trained successfully! Accuracy: {accuracy}")
     except Exception as e:
         print(f"Startup warning - AI model training failed: {e}")
+=======
+ @app.on_event("startup")
+def train_model_on_startup():
+    if workflow_model.is_trained():
+        workflow_model.load()
+        print("Saved AI model loaded (no retraining needed).")
+    else:
+        accuracy = workflow_model.train("dataset/risk_training_data.csv")
+        print(f"AI model trained for the first time! Accuracy: {accuracy}")
+>>>>>>> 90b4e5d784ba28eaf12d21df8b27f30eebf0074c
 
 # Run the application
 if __name__ == "__main__":

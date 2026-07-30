@@ -1,4 +1,6 @@
 import pandas as pd
+import joblib
+import os
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
@@ -12,6 +14,7 @@ class WorkflowRiskModel:
             n_estimators=100,
             random_state=42
         )
+        self.model_path = "app/ai/trained_model.pkl"
 
 
     def train(self, file_path):
@@ -37,7 +40,17 @@ class WorkflowRiskModel:
             predictions
         )
 
+        joblib.dump(self.model, self.model_path)
+
         return accuracy
+
+
+    def load(self):
+        self.model = joblib.load(self.model_path)
+
+
+    def is_trained(self):
+        return os.path.exists(self.model_path)
 
 
     def predict(self, features):
@@ -57,3 +70,7 @@ class WorkflowRiskModel:
 
 
 workflow_model = WorkflowRiskModel()
+
+        
+
+        
