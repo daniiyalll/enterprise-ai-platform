@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.database.session import get_db
+from app.database.connection import get_db
 from app.schemas.workflow import WorkflowCreate, WorkflowResponse
 from app.services.workflow_engine import (
     create_workflow,
     get_workflows
 )
+from app.core.dependencies import get_current_user
 
 
 router = APIRouter(
@@ -18,7 +19,8 @@ router = APIRouter(
 @router.post("/", response_model=WorkflowResponse)
 def create(
     workflow: WorkflowCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
 ):
 
     return create_workflow(db, workflow)
@@ -26,7 +28,10 @@ def create(
 
 @router.get("/", response_model=list[WorkflowResponse])
 def read_all(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
 ):
 
     return get_workflows(db)
+
+ 
