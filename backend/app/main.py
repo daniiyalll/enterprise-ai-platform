@@ -3,8 +3,15 @@ from fastapi.responses import FileResponse
 
 from app.database.connection import engine
 from app.database.base import Base
-from app.models import workflow
-
+from app.models import (
+    user,
+    workflow,
+    project,
+    employee,
+    ai_model,
+    dataset,
+    process
+)
 from app.ai.prediction_model import workflow_model
 from app.api.router import api_router
 
