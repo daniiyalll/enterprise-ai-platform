@@ -50,10 +50,14 @@ def home():
 def favicon():
     return FileResponse("favicon.ico") 
 
-@app.on_event("startup")
+ @app.on_event("startup")
 def train_model_on_startup():
-    accuracy = workflow_model.train("dataset/risk_training_data.csv")
-    print(f"AI model trained! Accuracy: {accuracy}")
+    if workflow_model.is_trained():
+        workflow_model.load()
+        print("Saved AI model loaded (no retraining needed).")
+    else:
+        accuracy = workflow_model.train("dataset/risk_training_data.csv")
+        print(f"AI model trained for the first time! Accuracy: {accuracy}")
 
  
      
