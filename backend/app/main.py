@@ -10,6 +10,7 @@ from app.api import process_mining
 from app.api import ai
 from app.api import auth
 from app.api import agents
+from app.api import decisions
 
 
 app = FastAPI(
@@ -50,6 +51,11 @@ app.include_router(
     tags=["AI Agents"]
 )
 
+# Decision Engine API routes
+app.include_router(
+    decisions.router,
+    tags=["Decision Engine"]
+)
 
 # Home route
 @app.get("/")
