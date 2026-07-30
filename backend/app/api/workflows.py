@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.database.connection import get_db
+from app.database.session import get_db
 from app.schemas.workflow import WorkflowCreate, WorkflowResponse
 from app.services.workflow_engine import (
     create_workflow,
@@ -33,5 +33,4 @@ def read_all(
 ):
 
     return get_workflows(db)
-
  
