@@ -11,7 +11,7 @@ from app.api import ai
 from app.api import auth
 from app.api import agents
 from app.api import decisions
-
+from app.api import copilot
 
 app = FastAPI(
     title="Enterprise AI Workflow Platform",
@@ -55,6 +55,11 @@ app.include_router(
 app.include_router(
     decisions.router,
     tags=["Decision Engine"]
+)
+# AI Copilot API routes
+app.include_router(
+    copilot.router,
+    tags=["AI Copilot"]
 )
 
 # Home route
