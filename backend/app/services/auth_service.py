@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.user import User
 from app.core.security import hash_password, verify_password, create_access_token
+from app.core.logging import logger
 
 
 def signup_user(db: Session, user_data):
@@ -11,6 +12,7 @@ def signup_user(db: Session, user_data):
     ).first()
 
     if existing_user:
+        logger.info(f"Signup failed - username or email already exists: {user_data.username}")
         return None
 
     new_user = User(
@@ -23,6 +25,8 @@ def signup_user(db: Session, user_data):
     db.commit()
     db.refresh(new_user)
 
+    logger.info(f"New user signed up: {new_user.username}")
+
     return new_user
 
 
@@ -33,11 +37,15 @@ def login_user(db: Session, login_data):
     ).first()
 
     if not user:
+        logger.info(f"Login failed - user not found: {login_data.username}")
         return None
 
     if not verify_password(login_data.password, user.hashed_password):
+        logger.info(f"Login failed - wrong password: {login_data.username}")
         return None
 
     token = create_access_token({"sub": user.username})
+
+    logger.info(f"User logged in: {user.username}")
 
     return token
