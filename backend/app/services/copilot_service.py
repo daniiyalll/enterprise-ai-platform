@@ -1,40 +1,81 @@
+from app.agents.approval_agent import approval_agent
+from app.agents.compliance_agent import compliance_agent
+from app.agents.document_agent import document_agent
+
+
 class CopilotService:
+
 
     def ask(self, question: str):
 
         question = question.lower()
 
-        if "approve" in question:
+        response = {
+            "question": question,
+            "agents_used": [],
+            "recommendation": None,
+            "details": []
+        }
 
-            return {
-                "answer": "This request should be reviewed by the approval agent.",
-                "recommended_action": "Approval Required",
-                "confidence": 0.95
-            }
 
-        elif "compliance" in question:
+        # Approval Agent
+        if "approve" in question or "approval" in question:
 
-            return {
-                "answer": "This request should be checked by the compliance agent.",
-                "recommended_action": "Run Compliance Check",
-                "confidence": 0.94
-            }
+            approval_result = approval_agent.analyze(
+                amount=5000,
+                employee_level="manager"
+            )
 
-        elif "document" in question:
+            response["agents_used"].append("Approval Agent")
+            response["details"].append(
+                approval_result
+            )
 
-            return {
-                "answer": "Please validate the uploaded document.",
-                "recommended_action": "Run Document Validation",
-                "confidence": 0.93
-            }
+
+        # Compliance Agent
+        if "compliance" in question or "policy" in question:
+
+            compliance_result = compliance_agent.check(
+                department="general",
+                amount=5000
+            )
+
+            response["agents_used"].append("Compliance Agent")
+            response["details"].append(
+                compliance_result
+            )
+
+
+        # Document Agent
+        if "document" in question or "file" in question:
+
+            document_result = document_agent.validate(
+                document_type="contract",
+                has_signature=True,
+                has_required_fields=True
+            )
+
+            response["agents_used"].append("Document Agent")
+            response["details"].append(
+                document_result
+            )
+
+
+        if len(response["agents_used"]) == 0:
+
+            response["recommendation"] = (
+                "No suitable agent found for this request."
+            )
 
         else:
 
-            return {
-                "answer": "I couldn't understand your request.",
-                "recommended_action": "Ask another question",
-                "confidence": 0.50
-            }
+            response["recommendation"] = (
+                "Request processed by AI agents."
+            )
+
+
+        return response
+
 
 
 copilot_service = CopilotService()
