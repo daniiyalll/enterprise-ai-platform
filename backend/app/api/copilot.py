@@ -8,12 +8,9 @@ router = APIRouter(
     tags=["AI Copilot"]
 )
 
-
 class CopilotRequest(BaseModel):
     question: str
 
-
 @router.post("/ask")
 def ask_copilot(request: CopilotRequest):
-
     return copilot_service.ask(request.question)
