@@ -1,6 +1,7 @@
 from app.agents.approval_agent import approval_agent
 from app.agents.compliance_agent import compliance_agent
 from app.agents.document_agent import document_agent
+from app.core.logging import logger
 
 
 def make_decision(
@@ -46,6 +47,8 @@ def make_decision(
         final_decision = "needs_review"
     else:
         final_decision = "approved"
+
+    logger.info(f"Decision made: {final_decision} for amount={amount}, department={department}")
 
     return {
         "final_decision": final_decision,
