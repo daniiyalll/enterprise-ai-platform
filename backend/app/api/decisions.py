@@ -1,7 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 
 from app.services.decision_engine import make_decision
+from app.database.session import get_db
 
 
 router = APIRouter(
@@ -20,9 +22,13 @@ class DecisionRequest(BaseModel):
 
 
 @router.post("/evaluate")
-def evaluate(request: DecisionRequest):
+def evaluate(
+    request: DecisionRequest,
+    db: Session = Depends(get_db)
+):
 
     return make_decision(
+        db,
         request.amount,
         request.employee_level,
         request.department,
