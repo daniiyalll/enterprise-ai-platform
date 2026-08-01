@@ -6,9 +6,18 @@ from app.agents.document_agent import document_agent
 class CopilotService:
 
 
-    def ask(self, question: str):
+    def ask(
+        self,
+        question: str,
+        amount: float = None,
+        employee_level: str = None,
+        department: str = None,
+        document_type: str = None,
+        has_signature: bool = None,
+        has_required_fields: bool = None
+    ):
 
-        question = question.lower()
+        question_lower = question.lower()
 
         response = {
             "question": question,
@@ -19,58 +28,79 @@ class CopilotService:
 
 
         # Approval Agent
-        if "approve" in question or "approval" in question:
+        if "approve" in question_lower or "approval" in question_lower:
 
-            approval_result = approval_agent.analyze(
-                amount=5000,
-                employee_level="manager"
-            )
+            if amount is None or employee_level is None:
 
-            response["agents_used"].append("Approval Agent")
-            response["details"].append(
-                approval_result
-            )
+                response["details"].append({
+                    "agent": "Approval Agent",
+                    "error": "Please provide 'amount' and 'employee_level' for a real answer."
+                })
+
+            else:
+
+                approval_result = approval_agent.analyze(
+                    amount,
+                    employee_level
+                )
+
+                response["agents_used"].append("Approval Agent")
+                response["details"].append(approval_result)
 
 
         # Compliance Agent
-        if "compliance" in question or "policy" in question:
+        if "compliance" in question_lower or "policy" in question_lower:
 
-            compliance_result = compliance_agent.check(
-                department="general",
-                amount=5000
-            )
+            if amount is None or department is None:
 
-            response["agents_used"].append("Compliance Agent")
-            response["details"].append(
-                compliance_result
-            )
+                response["details"].append({
+                    "agent": "Compliance Agent",
+                    "error": "Please provide 'amount' and 'department' for a real answer."
+                })
+
+            else:
+
+                compliance_result = compliance_agent.check(
+                    department,
+                    amount
+                )
+
+                response["agents_used"].append("Compliance Agent")
+                response["details"].append(compliance_result)
 
 
         # Document Agent
-        if "document" in question or "file" in question:
+        if "document" in question_lower or "file" in question_lower:
 
-            document_result = document_agent.validate(
-                document_type="contract",
-                has_signature=True,
-                has_required_fields=True
-            )
+            if document_type is None or has_signature is None or has_required_fields is None:
 
-            response["agents_used"].append("Document Agent")
-            response["details"].append(
-                document_result
-            )
+                response["details"].append({
+                    "agent": "Document Agent",
+                    "error": "Please provide 'document_type', 'has_signature' and 'has_required_fields' for a real answer."
+                })
+
+            else:
+
+                document_result = document_agent.validate(
+                    document_type,
+                    has_signature,
+                    has_required_fields
+                )
+
+                response["agents_used"].append("Document Agent")
+                response["details"].append(document_result)
 
 
         if len(response["agents_used"]) == 0:
 
             response["recommendation"] = (
-                "No suitable agent found for this request."
+                "No suitable agent found for this request, or required data was missing."
             )
 
         else:
 
             response["recommendation"] = (
-                "Request processed by AI agents."
+                "Request processed by AI agents using the provided data."
             )
 
 
