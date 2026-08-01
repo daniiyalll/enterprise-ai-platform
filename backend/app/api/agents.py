@@ -1,9 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
 from app.agents.approval_agent import approval_agent
 from app.agents.compliance_agent import compliance_agent
 from app.agents.document_agent import document_agent
+from app.core.dependencies import get_current_user
 
 
 router = APIRouter(
@@ -18,7 +19,10 @@ class ComplianceRequest(BaseModel):
 
 
 @router.post("/compliance")
-def compliance_check(request: ComplianceRequest):
+def compliance_check(
+    request: ComplianceRequest,
+    current_user = Depends(get_current_user)
+):
 
     result = compliance_agent.check(
         request.department,
@@ -35,7 +39,10 @@ class ApprovalRequest(BaseModel):
 
 
 @router.post("/approval")
-def approval_check(request: ApprovalRequest):
+def approval_check(
+    request: ApprovalRequest,
+    current_user = Depends(get_current_user)
+):
 
     result = approval_agent.analyze(
         request.amount,
@@ -53,7 +60,10 @@ class DocumentRequest(BaseModel):
 
 
 @router.post("/document")
-def document_check(request: DocumentRequest):
+def document_check(
+    request: DocumentRequest,
+    current_user = Depends(get_current_user)
+):
 
     result = document_agent.validate(
         request.document_type,
