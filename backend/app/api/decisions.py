@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.services.decision_engine import make_decision
 from app.database.session import get_db
+from app.core.dependencies import get_current_user
 
 
 router = APIRouter(
@@ -24,7 +25,8 @@ class DecisionRequest(BaseModel):
 @router.post("/evaluate")
 def evaluate(
     request: DecisionRequest,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
 ):
 
     return make_decision(
