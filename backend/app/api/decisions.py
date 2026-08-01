@@ -3,8 +3,10 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.services.decision_engine import make_decision
+from app.services.decision_service import get_decision_history
 from app.database.session import get_db
 from app.core.dependencies import get_current_user
+from app.schemas.decision import DecisionResponse
 
 
 router = APIRouter(
@@ -38,3 +40,12 @@ def evaluate(
         request.has_signature,
         request.has_required_fields
     )
+
+
+@router.get("/history", response_model=list[DecisionResponse])
+def history(
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+
+    return get_decision_history(db)
