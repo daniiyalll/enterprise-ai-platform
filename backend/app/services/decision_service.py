@@ -23,3 +23,13 @@ def save_decision(
     db.refresh(new_decision)
 
     return new_decision
+
+
+def get_decision_history(db: Session, limit: int = 50):
+
+    return (
+        db.query(Decision)
+        .order_by(Decision.id.desc())
+        .limit(limit)
+        .all()
+    )
