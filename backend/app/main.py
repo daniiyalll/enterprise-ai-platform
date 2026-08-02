@@ -12,6 +12,7 @@ from app.models import decision
 from app.ai.prediction_model import workflow_model
 
 from app.api.router import api_router
+from app.api import dashboard
 
 
 # Create database tables
@@ -71,6 +72,12 @@ def train_model_on_startup():
         print(
             f"AI model startup warning: {e}"
         )
+
+# Dashboard API routes
+app.include_router(
+    dashboard.router,
+    tags=["Dashboard"]
+)
 
 
 # Run application
