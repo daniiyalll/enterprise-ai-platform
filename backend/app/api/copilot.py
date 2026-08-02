@@ -3,7 +3,9 @@ from pydantic import BaseModel
 from typing import Optional
 
 from app.services.copilot_service import copilot_service
-from app.core.dependencies import get_current_user
+
+from app.core.permissions import require_employee
+
 
 router = APIRouter(
     prefix="/copilot",
@@ -11,28 +13,47 @@ router = APIRouter(
 )
 
 
+
 class CopilotRequest(BaseModel):
+
     question: str
+
     amount: Optional[float] = None
+
     employee_level: Optional[str] = None
+
     department: Optional[str] = None
+
     document_type: Optional[str] = None
+
     has_signature: Optional[bool] = None
+
     has_required_fields: Optional[bool] = None
+
 
 
 @router.post("/ask")
 def ask_copilot(
     request: CopilotRequest,
-    current_user = Depends(get_current_user)
+
+    current_user = Depends(require_employee)
+
 ):
 
     return copilot_service.ask(
+
         request.question,
+
         request.amount,
+
         request.employee_level,
+
         request.department,
+
         request.document_type,
+
         request.has_signature,
+
         request.has_required_fields
+
     )
