@@ -8,11 +8,12 @@ from app.database.base import Base
 from app.models import workflow
 from app.models import user
 from app.models import decision
+from app.api import dashboard
 
 from app.ai.prediction_model import workflow_model
 
 from app.api.router import api_router
-from app.api import dashboard
+ 
 
 
 # Create database tables
