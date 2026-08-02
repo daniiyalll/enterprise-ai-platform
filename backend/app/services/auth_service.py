@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.user import User
 from app.core.security import hash_password, verify_password, create_access_token
-from app.core.logging import logger
+from app.core.app_logger import logger
 
 
 def signup_user(db: Session, user_data):
