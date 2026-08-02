@@ -4,7 +4,8 @@ from pydantic import BaseModel
 from app.agents.approval_agent import approval_agent
 from app.agents.compliance_agent import compliance_agent
 from app.agents.document_agent import document_agent
-from app.core.dependencies import get_current_user
+
+from app.core.permissions import require_employee
 
 
 router = APIRouter(
@@ -13,15 +14,18 @@ router = APIRouter(
 )
 
 
+
 class ComplianceRequest(BaseModel):
+
     department: str
     amount: float
+
 
 
 @router.post("/compliance")
 def compliance_check(
     request: ComplianceRequest,
-    current_user = Depends(get_current_user)
+    current_user = Depends(require_employee)
 ):
 
     result = compliance_agent.check(
@@ -33,15 +37,19 @@ def compliance_check(
 
 
 
+
+
 class ApprovalRequest(BaseModel):
+
     amount: float
     employee_level: str
+
 
 
 @router.post("/approval")
 def approval_check(
     request: ApprovalRequest,
-    current_user = Depends(get_current_user)
+    current_user = Depends(require_employee)
 ):
 
     result = approval_agent.analyze(
@@ -53,16 +61,20 @@ def approval_check(
 
 
 
+
+
 class DocumentRequest(BaseModel):
+
     document_type: str
     has_signature: bool
     has_required_fields: bool
 
 
+
 @router.post("/document")
 def document_check(
     request: DocumentRequest,
-    current_user = Depends(get_current_user)
+    current_user = Depends(require_employee)
 ):
 
     result = document_agent.validate(
