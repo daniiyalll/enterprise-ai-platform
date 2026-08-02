@@ -1,3 +1,5 @@
 2026-08-02 22:34:42,774 - INFO - Login failed - user not found: your_username
 2026-08-02 23:01:45,824 - INFO - New user signed up: daniyal
 2026-08-02 23:13:59,670 - INFO - User logged in: daniyal
+2026-08-03 01:18:24,192 - INFO - Signup failed - username or email already exists: daniyal
+2026-08-03 01:19:04,669 - INFO - User logged in: daniyal
