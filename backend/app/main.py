@@ -14,6 +14,11 @@ from app.models import audit_log
 from app.ai.prediction_model import workflow_model
 
 from app.api.router import api_router
+
+from fastapi import Request
+
+from app.database.session import SessionLocal
+from app.services.audit_service import create_audit_log
  
 
 
@@ -74,6 +79,38 @@ def train_model_on_startup():
         print(
             f"AI model startup warning: {e}"
         )
+
+@app.middleware("http")
+async def audit_middleware(request: Request, call_next):
+
+    response = await call_next(request)
+
+    db = SessionLocal()
+
+    try:
+
+        username = "anonymous"
+
+        auth_header = request.headers.get("Authorization")
+
+        if auth_header:
+
+            username = "authenticated_user"
+
+        create_audit_log(
+            db=db,
+            username=username,
+            method=request.method,
+            endpoint=request.url.path,
+            action="API Request",
+            status_code=response.status_code
+        )
+
+    finally:
+
+        db.close()
+
+    return response
 
 # Dashboard API routes
 app.include_router(
