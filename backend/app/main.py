@@ -9,6 +9,7 @@ from app.models import workflow
 from app.models import user
 from app.models import decision
 from app.api import dashboard
+from app.models import audit_log
 
 from app.ai.prediction_model import workflow_model
 
