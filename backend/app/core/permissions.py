@@ -53,8 +53,7 @@ def require_employee(
     if current_user.role not in [
         "admin",
         "manager",
-        "employee",
-        "user"
+        "employee"
     ]:
 
         raise HTTPException(
