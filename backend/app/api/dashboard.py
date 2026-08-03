@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database.session import get_db
 from app.services.dashboard_service import get_dashboard_stats
-from app.core.dependencies import get_current_user
+from app.core.permissions import require_manager
 
 
 router = APIRouter(
@@ -15,7 +15,7 @@ router = APIRouter(
 @router.get("/stats")
 def stats(
     db: Session = Depends(get_db),
-    current_user = Depends(get_current_user)
+    current_user=Depends(require_manager)
 ):
 
     return get_dashboard_stats(db)
