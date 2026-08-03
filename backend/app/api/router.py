@@ -9,7 +9,7 @@ from app.api.decisions import router as decisions_router
 
 from app.api import agents
 from app.api import auth
-
+from app.api.users import router as users_router
 
 api_router = APIRouter()
 
@@ -71,4 +71,8 @@ api_router.include_router(
 api_router.include_router(
     auth.router,
     tags=["Authentication"]
+)
+api_router.include_router(
+    users_router,
+    tags=["User Management"]
 )
