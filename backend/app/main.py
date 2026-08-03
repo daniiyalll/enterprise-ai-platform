@@ -1,25 +1,23 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 
 from app.database.connection import engine
 from app.database.base import Base
+from app.database.session import SessionLocal
 
 # Import models so SQLAlchemy knows about tables
 from app.models import workflow
 from app.models import user
 from app.models import decision
-from app.api import dashboard
 from app.models import audit_log
+
+from app.api import dashboard
+from app.api.router import api_router
 
 from app.ai.prediction_model import workflow_model
 
-from app.api.router import api_router
-
-from fastapi import Request
-
-from app.database.session import SessionLocal
+from app.core.security import decode_access_token
 from app.services.audit_service import create_audit_log
- 
 
 
 # Create database tables
@@ -33,6 +31,51 @@ app = FastAPI(
 )
 
 
+# -------------------- Audit Middleware --------------------
+
+@app.middleware("http")
+async def audit_middleware(request: Request, call_next):
+
+    response = await call_next(request)
+
+    db = SessionLocal()
+
+    try:
+
+        username = "anonymous"
+
+        auth_header = request.headers.get("Authorization")
+
+        if auth_header and auth_header.startswith("Bearer "):
+
+            token = auth_header.split(" ")[1]
+
+            payload = decode_access_token(token)
+
+            if payload:
+
+                username = payload.get("sub", "anonymous")
+
+        create_audit_log(
+            db=db,
+            username=username,
+            method=request.method,
+            endpoint=request.url.path,
+            action="API Request",
+            status_code=response.status_code
+        )
+
+    except Exception as e:
+
+        print(f"Audit log warning: {e}")
+
+    finally:
+
+        db.close()
+
+    return response
+
+
 # Register all API routes
 app.include_router(
     api_router,
@@ -43,6 +86,7 @@ app.include_router(
 # Home route
 @app.get("/")
 def home():
+
     return {
         "message": "Enterprise AI Platform"
     }
@@ -51,6 +95,7 @@ def home():
 # Favicon route
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():
+
     return FileResponse("favicon.ico")
 
 
@@ -59,6 +104,7 @@ def favicon():
 def train_model_on_startup():
 
     try:
+
         if workflow_model.is_trained():
 
             workflow_model.load()
@@ -80,37 +126,6 @@ def train_model_on_startup():
             f"AI model startup warning: {e}"
         )
 
-@app.middleware("http")
-async def audit_middleware(request: Request, call_next):
-
-    response = await call_next(request)
-
-    db = SessionLocal()
-
-    try:
-
-        username = "anonymous"
-
-        auth_header = request.headers.get("Authorization")
-
-        if auth_header:
-
-            username = "authenticated_user"
-
-        create_audit_log(
-            db=db,
-            username=username,
-            method=request.method,
-            endpoint=request.url.path,
-            action="API Request",
-            status_code=response.status_code
-        )
-
-    finally:
-
-        db.close()
-
-    return response
 
 # Dashboard API routes
 app.include_router(
