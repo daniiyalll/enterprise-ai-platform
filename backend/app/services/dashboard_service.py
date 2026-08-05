@@ -1,8 +1,19 @@
 from sqlalchemy.orm import Session
 from app.models.decision import Decision
+from app.models.workflow import Workflow
 
 
 def get_dashboard_stats(db: Session):
+
+    total_workflows = db.query(Workflow).count()
+
+    active_workflows = db.query(Workflow).filter(
+        Workflow.is_active == True
+    ).count()
+
+    pending_workflows = db.query(Workflow).filter(
+        Workflow.status == "pending"
+    ).count()
 
     total_decisions = db.query(Decision).count()
 
@@ -39,10 +50,13 @@ def get_dashboard_stats(db: Session):
         average_confidence = 0
 
     return {
+        "total_workflows": total_workflows,
+        "active_workflows": active_workflows,
+        "pending_workflows": pending_workflows,
         "total_decisions": total_decisions,
         "total_approvals": total_approvals,
         "total_rejections": total_rejections,
-        "total_reviews_needed": total_reviews_needed,
+        "pending_requests": total_reviews_needed,
         "compliance_failures": compliance_failures,
         "document_rejections": document_rejections,
         "average_confidence": average_confidence
