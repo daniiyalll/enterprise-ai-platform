@@ -46,10 +46,6 @@ def get_agreement_adjustment(categories):
     """
     Adjusts overall confidence based on how much the agents agree with
     each other, not just their individual outcomes.
-
-    - All agents land in the same bucket (full agreement)      -> boost
-    - Agents split between positive and negative (hard clash)   -> big penalty
-    - Any other mix (e.g. positive + neutral)                   -> smaller penalty
     """
 
     distinct = set(categories)
