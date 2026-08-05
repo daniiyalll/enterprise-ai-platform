@@ -10,6 +10,7 @@ from app.api.decisions import router as decisions_router
 from app.api import agents
 from app.api import auth
 from app.api.users import router as users_router
+from app.api.dashboard import router as dashboard_router
 
 api_router = APIRouter()
 
@@ -25,7 +26,6 @@ api_router.include_router(
 # AI Prediction APIs
 api_router.include_router(
     ai_router,
-    prefix="/ai",
     tags=["AI"]
 )
 
@@ -33,7 +33,6 @@ api_router.include_router(
 # Workflow APIs
 api_router.include_router(
     workflows_router,
-    prefix="/workflows",
     tags=["Workflows"]
 )
 
@@ -75,4 +74,11 @@ api_router.include_router(
 api_router.include_router(
     users_router,
     tags=["User Management"]
+)
+
+
+# Dashboard / Statistics APIs
+api_router.include_router(
+    dashboard_router,
+    tags=["Dashboard"]
 )
