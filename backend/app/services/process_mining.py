@@ -9,10 +9,6 @@ import pm4py
 
 
 def load_event_log(csv_path: str):
-    """
-    Loads workflow_events.csv and converts it into a PM4Py-compatible event log.
-    Expected columns: case_id, activity, timestamp (plus any extra columns).
-    """
     df = pd.read_csv(csv_path)
     df["timestamp"] = pd.to_datetime(df["timestamp"])
 
@@ -32,10 +28,6 @@ def load_event_log(csv_path: str):
 
 
 def discover_process_map(csv_path: str):
-    """
-    Discovers the process map (directly-follows graph) from the event log.
-    Returns basic stats: number of cases, activities, and the most frequent paths.
-    """
     log = load_event_log(csv_path)
 
     num_cases = log["case:concept:name"].nunique()
@@ -58,10 +50,6 @@ def discover_process_map(csv_path: str):
 
 
 def find_bottlenecks(csv_path: str, top_n: int = 5):
-    """
-    Calculates average time spent between consecutive activities per case,
-    to highlight which transitions take the longest (likely bottlenecks).
-    """
     df = pd.read_csv(csv_path)
     df["timestamp"] = pd.to_datetime(df["timestamp"])
     df = df.sort_values(["case_id", "timestamp"])
@@ -85,10 +73,6 @@ def find_bottlenecks(csv_path: str, top_n: int = 5):
 
 
 def get_case_performance(csv_path: str):
-    """
-    Computes per-case duration and activity-count stats — how long a typical
-    case takes end-to-end, and how much variation there is across cases.
-    """
     df = pd.read_csv(csv_path)
     df["timestamp"] = pd.to_datetime(df["timestamp"])
 
@@ -111,10 +95,6 @@ def get_case_performance(csv_path: str):
 
 
 def get_frequent_paths(csv_path: str, top_n: int = 5):
-    """
-    Ranks each case's full activity sequence (its 'variant') by how often
-    that exact path occurs — the most common ways a case actually flows.
-    """
     df = pd.read_csv(csv_path)
     df["timestamp"] = pd.to_datetime(df["timestamp"])
     df = df.sort_values(["case_id", "timestamp"])
@@ -133,11 +113,6 @@ def get_frequent_paths(csv_path: str, top_n: int = 5):
 
 
 def get_summary_report(csv_path: str):
-    """
-    One-call summary combining process discovery, bottlenecks, case
-    performance, and the most frequent paths — meant to back a single
-    dashboard-style "process mining summary" endpoint.
-    """
     process_map = discover_process_map(csv_path)
     bottlenecks = find_bottlenecks(csv_path)
     performance = get_case_performance(csv_path)
