@@ -92,12 +92,6 @@ def frequent_paths(
 def summary(
     current_user=Depends(require_manager)
 ):
-    """
-    One-shot summary report: process map basics, case performance,
-    top bottlenecks, and the most frequent workflow paths — everything
-    needed for a process-mining dashboard view in a single call.
-    """
-
     try:
         return get_summary_report(CSV_PATH)
 
