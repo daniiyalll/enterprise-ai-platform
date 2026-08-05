@@ -5,22 +5,117 @@ from app.agents.document_agent import document_agent
 from app.services.decision_service import save_decision
 
 
+POSITIVE_OUTCOMES = ["approved", "passed"]
+NEUTRAL_OUTCOMES = ["review_required"]
+NEGATIVE_OUTCOMES = ["rejected", "failed"]
+
+
+def categorize(outcome):
+    """Buckets a raw agent outcome into positive / neutral / negative / unknown."""
+
+    if outcome in POSITIVE_OUTCOMES:
+        return "positive"
+
+    if outcome in NEUTRAL_OUTCOMES:
+        return "neutral"
+
+    if outcome in NEGATIVE_OUTCOMES:
+        return "negative"
+
+    return "unknown"
+
+
 def get_confidence(outcome):
+    """Base confidence for a single agent's own outcome."""
 
-    positive = ["approved", "passed"]
-    neutral = ["review_required"]
-    negative = ["rejected", "failed"]
+    category = categorize(outcome)
 
-    if outcome in positive:
+    if category == "positive":
         return 0.95
 
-    if outcome in neutral:
+    if category == "neutral":
         return 0.60
 
-    if outcome in negative:
+    if category == "negative":
         return 0.30
 
     return 0.50
+
+
+def get_agreement_adjustment(categories):
+    """
+    Adjusts overall confidence based on how much the agents agree with
+    each other, not just their individual outcomes.
+
+    - All agents land in the same bucket (full agreement)      -> boost
+    - Agents split between positive and negative (hard clash)   -> big penalty
+    - Any other mix (e.g. positive + neutral)                   -> smaller penalty
+    """
+
+    distinct = set(categories)
+
+    if len(distinct) == 1:
+        return 0.05
+
+    if "positive" in distinct and "negative" in distinct:
+        return -0.20
+
+    return -0.08
+
+
+def build_confidence_reasoning(categories, agreement_adjustment, overall_confidence):
+    """Produces a formal, auditable explanation for why the confidence score landed where it did."""
+
+    distinct = set(categories)
+    positive_count = categories.count("positive")
+    neutral_count = categories.count("neutral")
+    negative_count = categories.count("negative")
+
+    if len(distinct) == 1:
+        basis = (
+            f"All {len(categories)} agent checks reached the same conclusion "
+            f"({next(iter(distinct))}), so the confidence score has been increased "
+            f"by {agreement_adjustment:.2f} to reflect full agreement."
+        )
+    elif "positive" in distinct and "negative" in distinct:
+        basis = (
+            f"The agent checks produced conflicting results ({positive_count} positive, "
+            f"{neutral_count} neutral, {negative_count} negative), which is a material "
+            f"disagreement. The confidence score has been reduced by "
+            f"{abs(agreement_adjustment):.2f} to reflect this conflict."
+        )
+    else:
+        basis = (
+            f"The agent checks did not fully align ({positive_count} positive, "
+            f"{neutral_count} neutral, {negative_count} negative). The confidence score "
+            f"has been reduced by {abs(agreement_adjustment):.2f} to reflect the partial disagreement."
+        )
+
+    return (
+        f"{basis} Overall confidence: {overall_confidence:.2f} "
+        f"({round(overall_confidence * 100)}%)."
+    )
+
+
+def build_decision_explanation(final_decision, results):
+    """Produces a single, enterprise-readable summary of why the final decision was reached."""
+
+    lines = []
+
+    for result in results:
+        outcome = result.get("decision", result.get("status"))
+        lines.append(f"{result['agent']} — {outcome.replace('_', ' ')}: {result['reason']}.")
+
+    findings = " ".join(lines)
+
+    if final_decision == "rejected":
+        headline = "Request rejected. At least one agent check failed and must be resolved before this can proceed."
+    elif final_decision == "needs_review":
+        headline = "Request requires manual review. No check failed outright, but one or more items need human sign-off."
+    else:
+        headline = "Request approved. All agent checks were satisfied with no outstanding issues."
+
+    return f"{headline} {findings}"
 
 
 def make_decision(
@@ -30,7 +125,8 @@ def make_decision(
     department,
     document_type,
     has_signature,
-    has_required_fields
+    has_required_fields,
+    username=None
 ):
 
     results = []
@@ -62,6 +158,7 @@ def make_decision(
 
 
     confidences = []
+    categories = []
 
 
     # Save every agent decision with real confidence
@@ -71,18 +168,23 @@ def make_decision(
 
         confidence = get_confidence(outcome)
         confidences.append(confidence)
+        categories.append(categorize(outcome))
 
         save_decision(
             db=db,
             agent_name=result["agent"],
             decision=outcome,
             reason=result["reason"],
-            confidence=confidence
+            confidence=confidence,
+            username=username
         )
 
 
+    base_confidence = sum(confidences) / len(confidences)
+    adjustment = get_agreement_adjustment(categories)
+
     overall_confidence = round(
-        sum(confidences) / len(confidences),
+        min(1.0, max(0.0, base_confidence + adjustment)),
         2
     )
 
@@ -107,6 +209,9 @@ def make_decision(
 
     return {
         "final_decision": final_decision,
+        "decision_explanation": build_decision_explanation(final_decision, results),
         "overall_confidence": overall_confidence,
+        "confidence_reasoning": build_confidence_reasoning(categories, adjustment, overall_confidence),
+        "agents_agreed": len(set(categories)) == 1,
         "results": results
     }
