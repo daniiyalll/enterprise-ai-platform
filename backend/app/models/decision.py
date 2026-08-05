@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, DateTime
+from sqlalchemy.sql import func
 from app.database.base import Base
 
 
@@ -26,4 +27,14 @@ class Decision(Base):
 
     confidence = Column(
         Float
+    )
+
+    username = Column(
+        String,
+        nullable=True
+    )
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
     )
