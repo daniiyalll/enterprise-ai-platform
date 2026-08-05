@@ -11,7 +11,6 @@ from app.models import user
 from app.models import decision
 from app.models import audit_log
 
-from app.api import dashboard
 from app.api.router import api_router
 
 from app.ai.prediction_model import workflow_model
@@ -126,12 +125,6 @@ def train_model_on_startup():
             f"AI model startup warning: {e}"
         )
 
-
-# Dashboard API routes
-app.include_router(
-    dashboard.router,
-    tags=["Dashboard"]
-)
 
 
 # Run application
