@@ -5,6 +5,7 @@ from app.agents.document_agent import document_agent
 from app.services.decision_engine import (
     categorize,
     get_confidence,
+    get_confidence_level,
     POSITIVE_OUTCOMES,
     NEUTRAL_OUTCOMES,
     NEGATIVE_OUTCOMES
@@ -24,6 +25,7 @@ def explain_result(agent_label, result):
             "agent": agent_label,
             "status": "Cleared",
             "confidence": confidence,
+            "confidence_level": get_confidence_level(confidence),
             "summary": f"{agent_label}: {reason}.",
             "recommended_action": "No action required — this check has been satisfied."
         }
@@ -33,6 +35,7 @@ def explain_result(agent_label, result):
             "agent": agent_label,
             "status": "Requires Review",
             "confidence": confidence,
+            "confidence_level": get_confidence_level(confidence),
             "summary": f"{agent_label}: {reason}.",
             "recommended_action": "Escalate to a manager for manual sign-off before proceeding."
         }
@@ -42,6 +45,7 @@ def explain_result(agent_label, result):
             "agent": agent_label,
             "status": "Blocked",
             "confidence": confidence,
+            "confidence_level": get_confidence_level(confidence),
             "summary": f"{agent_label}: {reason}.",
             "recommended_action": "Resolve the issue above and resubmit; this will prevent final approval until addressed."
         }
@@ -50,6 +54,7 @@ def explain_result(agent_label, result):
         "agent": agent_label,
         "status": "Unknown",
         "confidence": confidence,
+        "confidence_level": get_confidence_level(confidence),
         "summary": f"{agent_label}: {reason or outcome}.",
         "recommended_action": "Manual review recommended — outcome could not be classified automatically."
     }
@@ -196,6 +201,7 @@ class CopilotService:
                 sum(e["confidence"] for e in response["explanations"]) / len(response["explanations"]),
                 2
             )
+            response["confidence_level"] = get_confidence_level(response["overall_confidence"])
 
         return response
 
