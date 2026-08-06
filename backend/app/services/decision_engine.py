@@ -59,6 +59,18 @@ def get_agreement_adjustment(categories):
     return -0.08
 
 
+def get_confidence_level(score):
+    """Maps a numeric confidence score to an enterprise-readable label."""
+
+    if score >= 0.85:
+        return "High"
+
+    if score >= 0.60:
+        return "Medium"
+
+    return "Low"
+
+
 def build_confidence_reasoning(categories, agreement_adjustment, overall_confidence):
     """Produces a formal, auditable explanation for why the confidence score landed where it did."""
 
@@ -89,7 +101,7 @@ def build_confidence_reasoning(categories, agreement_adjustment, overall_confide
 
     return (
         f"{basis} Overall confidence: {overall_confidence:.2f} "
-        f"({round(overall_confidence * 100)}%)."
+        f"({round(overall_confidence * 100)}%) — {get_confidence_level(overall_confidence)} confidence."
     )
 
 
@@ -207,6 +219,7 @@ def make_decision(
         "final_decision": final_decision,
         "decision_explanation": build_decision_explanation(final_decision, results),
         "overall_confidence": overall_confidence,
+        "confidence_level": get_confidence_level(overall_confidence),
         "confidence_reasoning": build_confidence_reasoning(categories, adjustment, overall_confidence),
         "agents_agreed": len(set(categories)) == 1,
         "results": results
