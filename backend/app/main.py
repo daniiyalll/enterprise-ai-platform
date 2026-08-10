@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
 from app.database.connection import engine
@@ -27,6 +28,19 @@ app = FastAPI(
     title="Enterprise AI Workflow Platform",
     description="AI powered business process intelligence platform",
     version="1.0.0"
+)
+
+
+# -------------------- CORS (allows the frontend to call this API) --------------------
+# Auth uses a Bearer token in the header (not cookies), so credentials aren't
+# needed and we can safely allow all origins for local/dev use. Lock this down
+# to your real frontend URL(s) before deploying.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
