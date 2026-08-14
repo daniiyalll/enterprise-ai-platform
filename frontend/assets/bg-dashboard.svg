@@ -1,0 +1,54 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <radialGradient id="centerGlow">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="grid">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+  </defs>
+
+  <rect width="1920" height="1080" fill="#07090d"/>
+
+  <ellipse
+    cx="1250"
+    cy="500"
+    rx="650"
+    ry="480"
+    fill="url(#centerGlow)"
+  />
+
+  <!-- architectural data lines -->
+
+  <g stroke="url(#grid)" stroke-width="2">
+
+    <path d="M800 100 L1600 100 L1750 260 L950 260 Z"/>
+    <path d="M720 360 L1580 360 L1720 520 L860 520 Z"/>
+    <path d="M650 620 L1500 620 L1650 780 L800 780 Z"/>
+
+  </g>
+
+  <!-- data nodes -->
+
+  <g fill="#e7e9ec">
+
+    <circle cx="800" cy="100" r="4"/>
+    <circle cx="1600" cy="100" r="4"/>
+
+    <circle cx="950" cy="260" r="5"/>
+    <circle cx="1580" cy="360" r="5"/>
+
+    <circle cx="860" cy="520" r="4"/>
+    <circle cx="1500" cy="620" r="5"/>
+
+  </g>
+
+</svg>
