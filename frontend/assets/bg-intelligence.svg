@@ -1,0 +1,57 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <radialGradient id="brainGlow">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.11"/>
+      <stop offset="45%" stop-color="#aeb6c0" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+  </defs>
+
+  <rect width="1920" height="1080" fill="#07090d"/>
+
+  <circle
+    cx="1100"
+    cy="520"
+    r="470"
+    fill="url(#brainGlow)"
+  />
+
+  <!-- AI network -->
+
+  <g
+    stroke="#dfe3e8"
+    stroke-opacity="0.12"
+    stroke-width="2">
+
+    <line x1="850" y1="300" x2="1050" y2="430"/>
+    <line x1="1050" y1="430" x2="1280" y2="300"/>
+
+    <line x1="850" y1="300" x2="820" y2="600"/>
+    <line x1="820" y1="600" x2="1050" y2="720"/>
+
+    <line x1="1050" y1="430" x2="1050" y2="720"/>
+    <line x1="1280" y1="300" x2="1320" y2="600"/>
+
+    <line x1="1050" y1="720" x2="1320" y2="600"/>
+
+  </g>
+
+  <!-- AI nodes -->
+
+  <g fill="#eef0f3">
+
+    <circle cx="850" cy="300" r="6"/>
+    <circle cx="1050" cy="430" r="12"/>
+    <circle cx="1280" cy="300" r="6"/>
+
+    <circle cx="820" cy="600" r="6"/>
+    <circle cx="1050" cy="720" r="8"/>
+    <circle cx="1320" cy="600" r="7"/>
+
+  </g>
+
+</svg>
