@@ -56,8 +56,8 @@
 
   /* ---------- Typography ---------- */
 
-  --display: 'Inter', 'Space Grotesk', sans-serif;
-  --body:    'Inter', 'Roboto', 'IBM Plex Sans', sans-serif;
+  --display: 'Inter', sans-serif;
+  --body:    'Inter', sans-serif;
   --mono:    'IBM Plex Mono', monospace;
 
 
@@ -82,7 +82,7 @@
   /* ---------- Glass ---------- */
 
   --glass:
-    rgba(15,18,24,0.48);
+    rgba(15,18,24,0.40);
 
   --glass-light:
     rgba(255,255,255,0.035);
@@ -850,8 +850,8 @@ button{
   background:
     linear-gradient(
       145deg,
-      rgba(255,255,255,0.025),
-      rgba(255,255,255,0.008)
+      rgba(255,255,255,0.02),
+      rgba(255,255,255,0.006)
     ),
     var(--glass);
 
@@ -863,9 +863,9 @@ button{
 
   box-shadow:var(--shadow-sm);
 
-  backdrop-filter:blur(10px) saturate(1.05);
+  backdrop-filter:blur(8px) saturate(1.04);
 
-  -webkit-backdrop-filter:blur(10px) saturate(1.05);
+  -webkit-backdrop-filter:blur(8px) saturate(1.04);
 
   transition:
     transform .22s ease,
@@ -890,7 +890,7 @@ button{
     linear-gradient(
       90deg,
       transparent,
-      rgba(255,255,255,0.14),
+      rgba(255,255,255,0.10),
       transparent
     );
 
