@@ -123,6 +123,9 @@ body{
   color:var(--text);
 
   font-family:var(--body);
+  font-weight:400;
+  line-height:1.45;
+  letter-spacing:-0.01em;
 
   -webkit-font-smoothing:antialiased;
 
@@ -271,7 +274,7 @@ button{
    SIDEBAR
    ============================================================ */
 
-.ledger{
+.sidebar{
 
   position:relative;
 
@@ -303,7 +306,7 @@ button{
 
 /* Sidebar edge */
 
-.ledger::after{
+.sidebar::after{
 
   content:"";
 
@@ -327,7 +330,7 @@ button{
 
 /* Sidebar ambient glow */
 
-.ledger::before{
+.sidebar::before{
 
   content:"";
 
@@ -580,7 +583,7 @@ button{
    SIDEBAR FOOTER
    ============================================================ */
 
-.ledger-foot{
+.sidebar-foot{
 
   margin-top:auto;
 
@@ -850,18 +853,20 @@ button{
   background:
     linear-gradient(
       145deg,
-      rgba(255,255,255,0.02),
-      rgba(255,255,255,0.006)
+      rgba(255,255,255,0.018),
+      rgba(255,255,255,0.005)
     ),
     var(--glass);
 
   border:1px solid var(--border);
 
-  border-radius:var(--radius);
+  border-radius:14px;
 
   padding:18px;
 
-  box-shadow:var(--shadow-sm);
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.05);
 
   backdrop-filter:blur(8px) saturate(1.04);
 
@@ -2790,4 +2795,23 @@ body.page-intelligence .main::before {
 .card + .card {
   border-top-color:
     rgba(255, 255, 255, 0.07);
+}
+
+.brand-logo{
+  width:44px;
+  height:44px;
+  display:block;
+  border-radius:8px;
+  box-shadow:
+    0 8px 20px rgba(71,94,255,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.28);
+}
+
+.auth-brand .brand-logo{
+  width:48px;
+  height:48px;
+  border-radius:10px;
+  box-shadow:
+    0 10px 22px rgba(71,94,255,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.28);
 }

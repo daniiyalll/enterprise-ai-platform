@@ -94,16 +94,18 @@ const UI = (() => {
 
     document.getElementById("app").innerHTML = `
       <div class="shell">
-        <aside class="ledger">
+        <aside class="sidebar">
           <div class="brand">
-            <div class="brand-mark">L</div>
+            <div class="brand-mark">
+              <img src="assets/logo.svg" alt="CortexFlow" class="brand-logo" />
+            </div>
             <div>
-              <div class="brand-name">Ledger</div>
+              <div class="brand-name">CortexFlow</div>
               <div class="brand-sub">Workflow Intelligence</div>
             </div>
           </div>
           ${navHtml}
-          <div class="ledger-foot">
+          <div class="sidebar-foot">
             <div class="user-chip">
               <div class="user-avatar">${initials(user.username)}</div>
               <div>
