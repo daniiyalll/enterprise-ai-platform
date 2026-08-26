@@ -5,7 +5,7 @@ internship. It combines a rules + ML based decision engine, individual AI
 agents (compliance, approval, document checks), a risk-prediction model,
 a conversational copilot, and process mining over workflow event logs —
 all exposed through a FastAPI backend and a browser-based frontend
-("Ledger").
+("CortexFlow").
 
 ## Status
 
@@ -37,7 +37,7 @@ backend/
   dataset/        # training data + workflow event log for process mining
   .env.example    # required environment variables (copy to .env)
 frontend/
-  index.html, css/, js/    # plain JS single-page app ("Ledger")
+  index.html, css/, js/    # plain JS single-page app ("CortexFlow")
 \`\`\`
 
 ## Running locally

@@ -1,4 +1,4 @@
-# Ledger — Frontend for the Enterprise AI Workflow Platform
+# CortexFlow — Frontend for the Enterprise AI Workflow Platform
 
 A dependency-free HTML/CSS/JS single-page app (no npm, no build step) that talks
 directly to the FastAPI backend in `enterprise-ai-platform-main/backend`.
