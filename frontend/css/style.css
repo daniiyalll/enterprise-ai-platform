@@ -1291,13 +1291,13 @@ label{
 
   display:block;
 
-  font-size:12px;
+  font-size:13px;
 
   font-weight:600;
 
-  color:var(--muted);
+  color:rgba(255,255,255,0.78);
 
-  margin-bottom:6px;
+  margin-bottom:8px;
 }
 
 
@@ -1308,17 +1308,19 @@ textarea{
   width:100%;
 
   background:
-    rgba(255,255,255,0.025);
+    rgba(233, 233, 208, 0.82);
 
-  border:1px solid var(--border-lt);
+  border:1px solid rgba(255,255,255,0.22);
 
-  color:var(--text);
+  color:#101216;
 
-  padding:10px 12px;
+  padding:14px 14px;
 
-  border-radius:var(--radius-sm);
+  border-radius:11px;
 
-  font-size:13.5px;
+  font-size:18px;
+
+  line-height:1.3;
 
   font-family:var(--body);
 
@@ -1357,7 +1359,7 @@ textarea:focus{
 
 
 .field{
-  margin-bottom:14px;
+  margin-bottom:18px;
 }
 
 
@@ -2172,6 +2174,11 @@ tbody tr:hover{
   pointer-events:none;
 }
 
+.auth-screen .auth-box {
+  max-width: 480px;
+  padding: 26px 28px 24px;
+}
+
 
 /* Login atmospheric glow */
 
@@ -2354,21 +2361,36 @@ tbody tr:hover{
 
   align-items:center;
 
-  gap:10px;
+  gap:12px;
 
-  margin-bottom:22px;
+  margin-bottom:28px;
 }
 
+.auth-brand .brand-name{
+  font-size:43px;
+  line-height:1;
+  letter-spacing:-0.06em;
+  font-weight:700;
+  color:#F2F4F7;
+}
+
+.auth-brand .brand-sub{
+  margin-top:8px;
+  font-size:12px;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.6);
+}
 
 .auth-title{
 
   font-family:var(--display);
 
-  font-size:21px;
+  font-size:20px;
 
   font-weight:700;
 
-  margin:0 0 4px;
+  margin:0 0 10px;
 
   color:#F5F6F8;
 }
