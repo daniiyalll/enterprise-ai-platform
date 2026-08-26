@@ -56,8 +56,8 @@
 
   /* ---------- Typography ---------- */
 
-  --display: 'Inter', sans-serif;
-  --body:    'Inter', sans-serif;
+  --display: 'Helvetica Now', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --body:    'Helvetica Now', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --mono:    'IBM Plex Mono', monospace;
 
 
