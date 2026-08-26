@@ -1,10 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="CortexFlow logo">
   <defs>
     <linearGradient id="g" x1="0" x2="1">
-      <stop offset="0%" stop-color="#6DD3FF" />
-      <stop offset="100%" stop-color="#7B61FF" />
+      <stop offset="0%" stop-color="#7DD3FF" />
+      <stop offset="42%" stop-color="#60A5FA" />
+      <stop offset="100%" stop-color="#7C5CFF" />
     </linearGradient>
+    <linearGradient id="flow" x1="0" x2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#E9F1FF" stop-opacity="0.75" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#1B2A4D" flood-opacity="0.35"/>
+    </filter>
   </defs>
+
   <rect rx="24" width="120" height="120" fill="url(#g)" />
-  <text x="50%" y="54%" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="56" fill="#fff" font-weight="700">C</text>
+
+  <circle cx="59" cy="60" r="30" fill="rgba(255,255,255,0.08)"/>
+
+  <path d="M78 31C92 39 101 52 101 68C101 89 84 101 61 101C41 101 28 91 20 75" fill="none" stroke="url(#flow)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)"/>
+
+  <path d="M35 81C45 93 58 99 73 97" fill="none" stroke="url(#flow)" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+
+  <circle cx="35" cy="81" r="6" fill="#FFFFFF"/>
+  <circle cx="78" cy="31" r="6" fill="#FFFFFF"/>
+  <circle cx="73" cy="97" r="6" fill="#FFFFFF"/>
+
+  <path d="M48 44C57 36 70 34 80 41" fill="none" stroke="rgba(255,255,255,0.52)" stroke-width="4" stroke-linecap="round"/>
+
+  <circle cx="51" cy="53" r="8" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
 </svg>
