@@ -2582,7 +2582,7 @@ tbody tr:hover{
    ------------------------------------------------------------ */
 
 body.page-dashboard .main::before {
-  background-image: url("/assets/backgrounds/bg-dashboard.jpg");
+  background-image: url("/assets/Backgrounds/bg-dashboard.jpg");
 }
 
 
@@ -2591,33 +2591,33 @@ body.page-dashboard .main::before {
    ------------------------------------------------------------ */
 
 body.page-workflows .main::before {
-  background-image: url("/assets/backgrounds/bg-workflows.jpg");
+  background-image: url("/assets/Backgrounds/bg-workflows.jpg");
 }
 
 /* Additional per-page backgrounds */
 
 body.page-decisions .main::before {
-  background-image: url("/assets/backgrounds/bg-decisions.jpg");
+  background-image: url("/assets/Backgrounds/bg-decisions.jpg");
 }
 
 body.page-agents .main::before {
-  background-image: url("/assets/backgrounds/bg-agents.jpg");
+  background-image: url("/assets/Backgrounds/bg-agents.jpg");
 }
 
 body.page-predict .main::before {
-  background-image: url("/assets/backgrounds/bg-predict.jpg");
+  background-image: url("/assets/Backgrounds/bg-predict.jpg");
 }
 
 body.page-copilot .main::before {
-  background-image: url("/assets/backgrounds/bg-copilot.jpg");
+  background-image: url("/assets/Backgrounds/bg-copilot.jpg");
 }
 
 body.page-mining .main::before {
-  background-image: url("/assets/backgrounds/bg-mining.jpg");
+  background-image: url("/assets/Backgrounds/bg-mining.jpg");
 }
 
 body.page-users .main::before {
-  background-image: url("/assets/backgrounds/bg-users.jpg");
+  background-image: url("/assets/Backgrounds/bg-users.jpg");
 }
 
 /* WebP overrides are disabled until .webp assets are generated locally. */
@@ -2727,7 +2727,7 @@ body.page-intelligence .main::before {
    ============================================================ */
 
 .auth-screen {
-  background-image: url("/assets/backgrounds/bg-login.jpg");
+  background-image: url("/assets/Backgrounds/bg-login.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
